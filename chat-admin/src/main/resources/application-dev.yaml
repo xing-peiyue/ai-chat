@@ -1,0 +1,137 @@
+chat:
+  visitorUrl: https://chat.qianhaiyunling.com/im/#/pages/chat
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      # 主库数据源
+      master:
+        url: jdbc:mysql://127.0.0.1:3306/im_chat?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        password: root
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username: chat
+        login-password: 123456
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  #redis配置
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      timeout: 3000ms
+      database: 10
+      # Jedis连接池配置（前缀同步改为spring.data.redis）
+      jedis:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+springdoc:
+  # 开启API文档（默认true）
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  # Swagger UI配置
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha # 标签按字母排序
+    operations-sorter: alpha # 接口按字母排序
+  # 可选：指定扫描的Controller包，避免扫描无关接口
+  packages-to-scan: com.chat.controller
+
+sms:
+  appKey: 42f9da67cc5dcae6afc1774fa
+
+# 微信开放平台开发配置
+wechat:
+  open:
+    componentAppId: wxe944e069f0c126f3
+    componentSecret: d10c71272f6490995bd0fc0bbff920a6
+    componentToken: 15645af1sdf23asdfasfasdf!dksfs
+    componentAesKey: sdddd1d44kjsaljf94841521sdfsdasddssddssdsdd
+  cp:
+    componentAppId: ww0ae1054f2725ff07
+    componentSecret: z4Td0b22l1-09TsFEyJwjhS2JrgaDR3klNXt2x6QnqA
+    componentToken: 7UqVgTs7SWMSlKVFi9JWYlFxN6Ny
+    componentAesKey: TwAe0GmIt56SosguXj5wlsLY3wa5jNsaAMtApujmQWB
+
+tiktok:
+  open:
+    clientKey: awgdbfhzpj98f1ra
+    clientSecret: 1e5da4ceb73133d7b153d6f24a3ae65d
+
+project:
+  upload:
+    # 文件上传路径
+    filePath: /home/upload
+    domain: http://127.0.0.1:9960/chat
+
+# 支付配置
+pay:
+  wechat:
+    appId: wx45ca3764ee7e7a36
+    appSecret: c03b06d538a92f64863d67896290f677
+    mchId: 1626409142
+    mchKey: HjiT0YlRYcGC4WS0WroJnMmVe2RRTabc
+    notifyUrl: http://xing666.gnway.cc:80/chat/pay/wx/notify
+    keyPath: /root/cert/prikey/1626409142key.pem
+    refundUrl: /root/cert/cert/1626409142cert.pem
+  ali:
+    appId: 2021004136614020
+    gatewayUrl: https://openapi.alipay.com/gateway.do
+    merchantPrivateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCzIhr+l+EI8Attu9rm1lwRhv7HxjXJCsNVR5Bd11HBIExAjkKha38pCTqHGNRrywdWim8jRoW0sxTuVotHfIQKfFrNVmmpy9+2E6RcGGJ22rMd3OZLS/sfLn1hpuipqjcPvKROrh1YaGVrmqOvbdjeRl/L+4PUXQSLKuCqkJ4mLGMqPT0C/DJPFBqvOPUFTJ/SZZOP8ju53n6o7UTozvvXX/Ew924scVzYd0LE1/Sf1dwjDHWy7Uh1Y+aRKPQbjKuYl7vt2Ln59qAPu8Vjsns/OaqvblG2PV2ZTEz7Hoam1k/o3drDPM+WEM/Rha8yQatT1IPIwWe+jetfvBKCjFHJAgMBAAECggEAXMmux++uDi4hDV9APVAN8rpFYP/HvnKHybW/DwzIeUwck1fdJbYD8SKpoW74ITnSfD5K4S/XdElK70X+8TGLR88wTaqUIvLK14qHGXk8D6qrGy3gUGJ0Gqu/IIUPgUr9KHajeWnxI2k4F6vLW8R/kGtNleCbYbYo81lrdI5ijQySk7LbjA4LFjIPoFVCga94HFLqFkWVMBEeiKvZ55lvfp3w7YR+KQqTh1xR8gJhTGLodA1/wDul9gidjyZ5iViDq8ah5DolFEM5CVMmZOLc7foBFJfhNe04AyvL4BNN7SpG44AiGRKHv7rupJBtt2iSE1oYEuybfp6WhQ6Cb3S6AQKBgQD5BxqOYyeAEJI0uzBqydT6I+wzApHyzmw8o5EoPaq9UhGml5bJqTgQdxolzaQNziGvuCFkTQSRqCGWR46cEzCeHFPuZXqg5ey6EuY6256tfZ1YTSyECDYWkVsrxRidNs+PPJufTx1OHqTPxb+qgIty4TMgnMtt5+TDbXNbCBC6CQKBgQC4JgkZwyoPq33Cbm9Vt00SQNcn8HZFe8wJ2xx9iArcJVN7sEyrIyLht/HrsltihrZ/VUSVRcIOfD9aXy96+ORrYsX+/wrqpOzBzvuBaA49X9MnOKFOZsTJlptuepIpmCTTjsHsHIcVwvbSnT/nc2Wf2GWuRilIam/VpwAXcKfJwQKBgAEUQs0zKMypRbjsxrzvuviKh0+BR1iiBF4O52YhPkgrvt/V8FVXYmLP4VEgnwFgT00PozVoEAkBjYO1M60BeEh3HvX9gpaH6Iq14kGHChz+WlwzmWnJD1Lxtk9uPzkPL78TKCl8kkfwYg50cOwwOmp5B1uw0kDbrGYcZ0+RrWDhAoGAOqtjmuGjNPreRmQI9LZBx98ArajfBaQ7jahRm20MiLcbsfypcJzxMBj66q0YkHt7CXaRMz3WZecQCCrrZbKGk/AURPnc8IU7KURYvRH593PgQk64ldIIQHHLc5d5mebvVLfW8PLl1vkWymNvSL5rUlIPk0anQHsoxlk+njk2PAECgYEA3pqsCEkm+ytUuL4nuDPUhpjYIWZf3lA8oHWyGencw4PONHTTTogG4VITbxOXNPa5WcTG5CehrPb9XeEeaAL/2dCRb/Aiz/toPcZIR76NKMs4B5Txepx65r0qrjXQsXFYFYUx55ozcCObKtSsYgCmiCRPBskQZb3y/N0MkvZLSjA=
+    publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAonmRphrRS7NSr2jeeSumYqIqo85KWurY8AETwj+my4F4QJB8Z5MUBfDddGnACuX95RvuAa7zOhHBcjH82dQ0TlnBfgLPzxPvkaucClDn9ZiweUx55A+qel5WCis4XPH3ihLFxiuB1Ifbr3T/YbRfhFOvcWEUPBhF1bZ5X5H5YndgBg9VY4EWW0UisNNE9sYytZ+VOuDw5Te3aQ273B/+HFKItnj+5z6bRjfWaoSQTsUHGJVP+pRO7upn0x/jOeyzcoxbR+PyKRefnNoUySQVO/zc/sqIlBROY/WOQE6mnjga4YBnimiqJFNOk4N7hzrEMSK9byULNueNkHBuJGyYfQIDAQAB
+    returnUrl:
+    notifyUrl: http://xing666.gnway.cc:80/chat/pay/ali/notify
+    appCertPath:
+
+ai:
+  qianwen:
+    apiKey: sk-440026c331e341269bda05bed0138050
+    model: qwen-plus
